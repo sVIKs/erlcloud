@@ -858,7 +858,7 @@ request2(Config, Operation, Json) ->
 request_to_return(#aws_request{response_type = ok,
                                response_body = Body}) ->
     %% TODO check crc
-    {ok, jsx:decode(Body, [{return_maps, false}])};
+    {ok, jsx:decode(Body, [])};
 request_to_return(#aws_request{response_type = error,
                                error_type = aws,
                                httpc_error_reason = undefined,
@@ -902,7 +902,7 @@ client_error(#aws_request{response_body = Body} = Request) ->
         false ->
             Request#aws_request{should_retry = false};
         true ->
-            Json = jsx:decode(Body, [{return_maps, false}]),
+            Json = jsx:decode(Body, []),
             case proplists:get_value(<<"__type">>, Json) of
                 undefined ->
                     Request#aws_request{should_retry = false};

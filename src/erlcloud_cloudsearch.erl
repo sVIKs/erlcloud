@@ -721,7 +721,7 @@ cloudsearch_query(Config, Action, Params, ApiVersion) ->
                                    [{"Accept", "application/json"}],
                                    Config) of
     {ok, Response} ->
-        {ok, jsx:decode(Response, [{return_maps, false}])};
+        {ok, jsx:decode(Response, [])};
     {error, Reason} ->
         {error, Reason}
     end.
@@ -736,7 +736,7 @@ cloudsearch_post_json(Host, Path, Body,
             [{"content-type", "application/json"} | Headers],
             [], Config) of
        {ok, RespBody} ->
-            {ok, jsx:decode(RespBody, [{return_maps, false}])};
+            {ok, jsx:decode(RespBody, [])};
        {error, Reason} ->
             {error, Reason}
     end.

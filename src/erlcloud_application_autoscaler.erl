@@ -689,7 +689,7 @@ aas_result_fun(#aws_request{response_type = error,
                             response_status = 400,
                             response_body = Body} = Request) ->
     %% Retry on ThrottlingException, ConcurrentUpdateException
-    try jsx:decode(Body, [{return_maps, false}]) of
+    try jsx:decode(Body, []) of
         Json ->
             case proplists:get_value(<<"__type">>, Json) of
                 <<"ThrottlingException">> ->
@@ -725,7 +725,7 @@ request_with_action(Configuration, BodyConfiguration, Action) ->
             Response = erlcloud_retry:request(Config, Request, fun aas_result_fun/1),
             case Response#aws_request.response_type of
                 ok ->
-                    {ok, jsx:decode(Response#aws_request.response_body, [{return_maps, false}])};
+                    {ok, jsx:decode(Response#aws_request.response_body, [])};
                 _ ->
                     decode_error(Response)
             end;
@@ -767,7 +767,7 @@ decode_error(#aws_request{response_body = Body} = Response) ->
         false ->
             erlcloud_aws:request_to_return(Response);
         true ->
-            DecodedError = jsx:decode(Body, [{return_maps, false}]),
+            DecodedError = jsx:decode(Body, []),
             ErrorType = proplists:get_value(<<"__type">>, DecodedError, <<>>),
             ErrorMessage = proplists:get_value(<<"Message">>, DecodedError, <<>>),
             {error, {ErrorType, ErrorMessage}}

@@ -551,7 +551,7 @@ ssm_request_impl(Config, Operation, Body) ->
                            request_body = Payload},
     case erlcloud_aws:request_to_return(erlcloud_retry:request(Config, Request, fun ssm_result_fun/1)) of
         {ok, {_RespHeaders, <<>>}} -> {ok, []};
-        {ok, {_RespHeaders, RespBody}} -> {ok, jsx:decode(RespBody, [{return_maps, false}])};
+        {ok, {_RespHeaders, RespBody}} -> {ok, jsx:decode(RespBody, [])};
         {error, _} = Error -> Error
     end.
 

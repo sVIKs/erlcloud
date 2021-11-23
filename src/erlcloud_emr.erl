@@ -207,11 +207,11 @@ request_no_update(Action, Json, Scheme, Host, Port, Service, Opts, Cfg) ->
                           raw -> {ok, Body};
                           _   -> case Body of
                                      <<>> -> {ok, <<>>};
-                                     _    -> {ok, jsx:decode(Body, [{return_maps, false}])}
+                                     _    -> {ok, jsx:decode(Body, [])}
                                  end
                       end;
         {error, {http_error, _Code, _StatusLine, ErrBody}} ->
-            {error, {aws_error, jsx:decode(ErrBody, [{return_maps, false}])}};
+            {error, {aws_error, jsx:decode(ErrBody, [])}};
         {error, {socket_error, Reason}} ->
             {error, {socket_error, Reason}}
     end.

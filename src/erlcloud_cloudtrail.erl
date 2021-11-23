@@ -205,7 +205,7 @@ request_impl(Method, Scheme, Host, Port, Path, Operation, Params, Body, #aws_con
        {ok, RespBody} ->
             case Config#aws_config.cloudtrail_raw_result of
                 true -> {ok, RespBody};
-                _ -> {ok, jsx:decode(RespBody, [{return_maps, false}])}
+                _ -> {ok, jsx:decode(RespBody, [])}
             end;
         {error, Reason} ->
             {error, Reason}
